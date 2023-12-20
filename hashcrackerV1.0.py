@@ -12,8 +12,8 @@ class HashCrackerApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Hash Cracker")
-        self.results = {}
-
+        self.results = {} # Dictionary to store cracked hash results
+         # Create GUI widgets
         self.create_widgets()
 
     def create_widgets(self):
@@ -53,6 +53,7 @@ class HashCrackerApp:
         self.output_text.config(state=tk.DISABLED)
 
     def browse_file(self):
+        # Allow user to select a file and display its path in the entry widget
         file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")])
         if file_path:
             self.file_entry.config(state=tk.NORMAL)  # Enable the entry field
@@ -61,6 +62,7 @@ class HashCrackerApp:
             self.file_entry.config(state="readonly")  # Disable the entry field again
 
     def crack_single_hash(self):
+        # Crack a single hash and display the result in the GUI
         hash_value = self.single_hash_entry.get().strip()
         if hash_value:
             self.output_text.config(state=tk.NORMAL)
@@ -73,6 +75,7 @@ class HashCrackerApp:
             self.output_text.config(state=tk.DISABLED)
 
     def crack_file(self):
+        # Crack hashes from a file and display the results in the GUI
         file_path = self.file_entry.get().strip()
         if file_path:
             hashes = self.extract_hashes_from_file(file_path)
@@ -95,10 +98,7 @@ class HashCrackerApp:
                         self.progress_var.set(progress_value)
                         self.root.update_idletasks()
 
-        # ... (rest of the code remains the same)
-
-
-            self.progress_var.set(0)  # Reset progress bar
+            self.progress_var.set(0)  
 
             # Display cracked hashes in the output area
             self.output_text.config(state=tk.NORMAL)
@@ -109,6 +109,7 @@ class HashCrackerApp:
             self.output_text.config(state=tk.DISABLED)
 
     def crack(self, hash_value):
+        # Crack a hash and return the result
         if len(hash_value) == 32:  # MD5
             self.results[hash_value] = self.md5(hash_value)
             return self.md5(hash_value)
@@ -118,6 +119,7 @@ class HashCrackerApp:
             return self.sha(hash_value, 'sha')
 
     def extract_hashes_from_file(self, file_path):
+        # Extract hashes from a file and return a list of unique hashes
         hashes = set()
         with open(file_path, 'r') as file:
             for line in file:
@@ -126,11 +128,10 @@ class HashCrackerApp:
         return list(hashes)
 
     def md5(self, hashvalue):
+        # Crack an MD5 hash using nitrxgen.net and hashtoolkit.com
         response_nitrxgen = requests.get('https://www.nitrxgen.net/md5db/' + hashvalue, verify=False).text
         if response_nitrxgen:
             return response_nitrxgen
-
-        # Use the updated logic to extract results from hashtoolkit.com
         return self.extract_result_from_hashtoolkit(hashvalue)
 
     def sha(self, hashvalue, hashtype):
@@ -138,6 +139,7 @@ class HashCrackerApp:
         return self.extract_result_from_hashtoolkit(hashvalue)
 
     def extract_result_from_hashtoolkit(self, hashvalue):
+        # Extract the result from hashtoolkit.com for a given hash
         url = f'https://hashtoolkit.com/decrypt-hash/?hash={hashvalue}'
 
         headers = {
