@@ -20,7 +20,7 @@ An executable version of the Hash Cracker has been provided. Follow these steps:
 
 #### Download the Executable
 
-Download the executable file [hashcrackerV1.0]() from the project repository.
+Download the executable file [hashcrackerV1.0](https://github.com/MrRedhu/hashcracker/blob/main/hashcrackerV1.0) from the project repository.
 
 #### Run in Terminal
 
