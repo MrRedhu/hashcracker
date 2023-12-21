@@ -105,8 +105,15 @@ class HashCrackerApp:
             self.output_text.delete(1.0, tk.END)  # Clear previous output
             for hash_value, result in self.results.items():
                 self.output_text.insert(tk.END, f"{hash_value}: {result}\n")
-            self.output_text.insert(tk.END, f"Results saved in cracked-{os.path.basename(file_path)}")
-            self.output_text.config(state=tk.DISABLED)
+    
+            # Extract the base name and extension of the input file
+            base_name, extension = os.path.splitext(os.path.basename(file_path))
+    
+            # Save cracked hashes to a text file
+            output_file_path = f"cracked-{base_name}.txt"
+            with open(output_file_path, 'w') as output_file:
+                for hash_value, result in self.results.items():
+                    output_file.write(f"{hash_value}: {result}\n")
 
     def crack(self, hash_value):
         # Crack a hash and return the result
